@@ -3,17 +3,17 @@
     <p>Texte :</p>
         <textarea v-model="submitted_text" id="input-text" cols="120" rows="30"></textarea>
         <p>{{text_length}}</p>
-        <!-- <p>{{displayText}}</p> -->
-        <div v-for="sentence in displayedText" :key="sentence">
+        <p>{{textToDisplay}}</p>
+        <!-- <div v-for="sentence in textToDisplay" :key="sentence">
             {{ sentence }}
-        </div>
+        </div> -->
 </div>
 </template>
 
 <script>
 /* eslint-disable */
 
-import Analyser from "../utils/analysis_class"
+import Analyser from "../utils/analyser"
 
 export default {
     name: 'TextInput',
@@ -27,9 +27,9 @@ export default {
             let test = new Analyser(this.submitted_text)
             return test.getLength()
         },
-        displayedText() {
+        textToDisplay() {
             let text = new Analyser(this.submitted_text)
-            return text.clear()
+            return text.getProperNouns()
         }
     },
     methods: {
