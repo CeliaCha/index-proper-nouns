@@ -1,7 +1,7 @@
 <template>
 <div>
     <p>Texte :</p>
-        <textarea v-model="submitted_text" id="input-text" cols="120" rows="30"></textarea>
+        <textarea v-model="submittedText" id="input-text" cols="120" rows="30"></textarea>
         <p>{{text_length}}</p>
         <p>{{textToDisplay}}</p>
         <!-- <div v-for="sentence in textToDisplay" :key="sentence">
@@ -19,17 +19,39 @@ export default {
     name: 'TextInput',
     data() {
         return {
-            submitted_text: ""
+            submittedText: "",
+            properNouns: "",
+            storedNouns: [],
+            storedWords: [],
         }
     },
+    mounted: function () {
+        if (localStorage.getItem('storedNouns')) this.storedNouns = JSON.parse(localStorage.getItem('storedNouns'))
+        if (localStorage.getItem('storedWords')) this.storedWords = JSON.parse(localStorage.getItem('storedWords'))
+    },
+    watch: {
+        storedNouns: {
+            handler() {
+                localStorage.setItem('storedNouns', JSON.stringify(this.storedNouns))
+                deep: true
+            }
+        },
+        storedWords: {
+            handler() {
+                localStorage.setItem('storedWords', JSON.stringify(this.storedWords))
+                deep: true
+            }
+        },
+    },
     computed: {
+        text() {
+            return new Analyser(this.submittedText)
+        },
         text_length() {
-            let test = new Analyser(this.submitted_text)
-            return test.getLength()
+            return this.text.getLength()
         },
         textToDisplay() {
-            let text = new Analyser(this.submitted_text)
-            return text.getProperNouns()
+            return this.text.getProperNouns()
         }
     },
     methods: {
