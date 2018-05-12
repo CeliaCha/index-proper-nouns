@@ -35,7 +35,7 @@ class Analyser {
     getLength () {
         return this.input.length
     }
-    getProperNouns () {
+    getProperNouns (wordsToIgnore) {
         /**
          * nettoyer ponctuation
          * get uniques
@@ -46,15 +46,16 @@ class Analyser {
 
         // Get uniques words
         let uniqueWords = _.uniq(this._formatText())
-        console.log(uniqueWords)
 
         // Find uppercase words
         let regexp = /^[A-Z]/
         let uppercaseWords = []
         for (let word of uniqueWords)  {
             if (regexp.test(word.charAt(0))) {
-                if (word.length > 2 && !commonWords.includes(word.toLowerCase()) )
-                uppercaseWords.push(word)
+                if (
+                    word.length > 2 && !commonWords.includes(word.toLowerCase()) 
+                    && !wordsToIgnore.includes(word.toLowerCase())
+                ) uppercaseWords.push(word)
             }
         }
 

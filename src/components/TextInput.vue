@@ -3,10 +3,10 @@
     <p>Texte :</p>
         <textarea v-model="submittedText" id="input-text" cols="120" rows="30"></textarea>
         <p>{{text_length}}</p>
-        <p>{{textToDisplay}}</p>
-        <!-- <div v-for="sentence in textToDisplay" :key="sentence">
-            {{ sentence }}
-        </div> -->
+        <!-- <p>{{properNouns}}</p> -->
+        <div v-for="noun in properNouns" :key="noun" @click="addWordToIgnore(noun)">
+            {{ noun }}
+        </div>
 </div>
 </template>
 
@@ -20,26 +20,23 @@ export default {
     data() {
         return {
             submittedText: "",
-            properNouns: "",
             storedNouns: [],
-            storedWords: [],
+            wordsToIgnore: [],
         }
     },
     mounted: function () {
         if (localStorage.getItem('storedNouns')) this.storedNouns = JSON.parse(localStorage.getItem('storedNouns'))
-        if (localStorage.getItem('storedWords')) this.storedWords = JSON.parse(localStorage.getItem('storedWords'))
+        if (localStorage.getItem('wordsToIgnore')) this.wordsToIgnore = JSON.parse(localStorage.getItem('wordsToIgnore'))
     },
     watch: {
         storedNouns: {
             handler() {
                 localStorage.setItem('storedNouns', JSON.stringify(this.storedNouns))
-                deep: true
             }
         },
-        storedWords: {
+        wordsToIgnore: {
             handler() {
-                localStorage.setItem('storedWords', JSON.stringify(this.storedWords))
-                deep: true
+                localStorage.setItem('wordsToIgnore', JSON.stringify(this.wordsToIgnore))
             }
         },
     },
@@ -50,13 +47,14 @@ export default {
         text_length() {
             return this.text.getLength()
         },
-        textToDisplay() {
-            return this.text.getProperNouns()
+        properNouns() {
+            return this.text.getProperNouns(this.wordsToIgnore)
         }
     },
     methods: {
-        name() {
-
+        addWordToIgnore(word) {
+            this.wordsToIgnore.push(word.toLowerCase())
+            console.log(this.wordsToIgnore)
         }
     },
 
