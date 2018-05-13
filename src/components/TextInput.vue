@@ -4,9 +4,9 @@
         <textarea v-model="submittedText" id="input-text" cols="120" rows="30"></textarea>
         <p>{{text_length}}</p>
         <!-- <p>{{properNouns}}</p> -->
-        <div v-for="noun in properNouns" :key="noun" @click="addWordToIgnore(noun)">
-            {{ noun }}
-        </div>
+        <button v-for="item in properNouns" :key="item[0]" @click="addWordToIgnore(item[0])">
+            {{ item[0] }} : {{ item[1]}}
+        </button>
 </div>
 </template>
 
