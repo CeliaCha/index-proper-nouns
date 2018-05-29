@@ -3,7 +3,6 @@
     <p>Texte :</p>
         <textarea v-model="submittedText" id="input-text" cols="120" rows="30"></textarea>
         <p>{{text_length}}</p>
-        <!-- <p>{{properNouns}}</p> -->
         <button v-for="item in properNouns" :key="item[0]" @click="addWordToIgnore(item[0])">
             {{ item[0] }} : {{ item[1]}}
         </button>
@@ -13,10 +12,9 @@
 <script>
 /* eslint-disable */
 
-import Analyser from "../utils/analyser"
+import Analyser from "../utils/Analyser"
 
 export default {
-    name: 'TextInput',
     data() {
         return {
             submittedText: "",

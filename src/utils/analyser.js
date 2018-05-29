@@ -1,12 +1,11 @@
 /* eslint-disable */
 import commonWords from '../data/commonWords'
-import { WSAECONNABORTED } from 'constants';
 
 class Analyser {
     constructor (text) {
         this.input = text
     }
-    _formatText () {
+    clearText () {
         // Remove special chars
         let text = this.input.replace(/\n|\t|\r/g, ' ')
 
@@ -36,12 +35,12 @@ class Analyser {
     getProperNouns (wordsToIgnore) {
         /**
          * @TODO
-         * compter occurences des mots uniques
-         * classer en fonction des résulats
+         * détecter noms propres multiples
          */
+        let clearedText = this.clearText()
 
         // Get unique words (Lodash)
-        let uniqueWords = _.uniq(this._formatText())
+        let uniqueWords = _.uniq(clearedText)
 
         // Find uppercase words
         let regexp = /^[A-Z]/
@@ -57,32 +56,25 @@ class Analyser {
         }
         
         // Clear common words from text
-        let allProperNouns = this._formatText().filter(word => uppercaseWords.includes(word))
+        let allProperNouns = clearedText.filter(word => uppercaseWords.includes(word))
 
         // Count occurrences
         let  countOccurrences = {};
         allProperNouns.forEach(word => countOccurrences[word] = (countOccurrences[word]||0) + 1)
-
-
-
-        // You can't "sort" the keys of an object, because they do not have a defined order. Think of objects as a set of key-value pairs, rather than a list of them.
-
-        // You can, however, turn your JSON into a sorted list (array) of key-value pairs, yielding an object that looks like this:
-
-        // [ ['X', 0.42498], ['B', 0.38408], ['A', 0.34891], ['C', 0.22523] ]
-
-        // Demo:
-
-        var result = {X: 0.42498, A: 0.34891, B: 0.38408, C: 0.22523}
-
-        var sorted = Object.keys(countOccurrences).map(function (key) {
+        let sorted = Object.keys(countOccurrences).map(function (key) {
             return [key, this[key]]
         }, countOccurrences).sort(function (a, b) {
             return b[1] - a[1]
         })
-        // console.log(sorted)
 
-
+        // Find multiples
+        for (let word of uniqueWords) {
+            /** 
+             * find index of word in clearedText
+             * let sequence = clearedText[index] + clearedText[index+1]
+             * if (countOccurences(clearedText, sequence)) > n { multiples.push(sequence) }
+             */
+        }
 
         return sorted
     }
