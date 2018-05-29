@@ -2,8 +2,8 @@
 import commonWords from '../data/commonWords'
 
 class Analyser {
-    constructor (text) {
-        this.input = text
+    constructor (input) {
+        this.input = input
     }
     clearText () {
         // Remove special chars
@@ -37,6 +37,7 @@ class Analyser {
          * @TODO
          * détecter noms propres multiples
          */
+
         let clearedText = this.clearText()
 
         // Get unique words (Lodash)
@@ -59,13 +60,14 @@ class Analyser {
         let allProperNouns = clearedText.filter(word => uppercaseWords.includes(word))
 
         // Count occurrences
-        let  countOccurrences = {};
+        let  countOccurrences = {}
         allProperNouns.forEach(word => countOccurrences[word] = (countOccurrences[word]||0) + 1)
-        let sorted = Object.keys(countOccurrences).map(function (key) {
-            return [key, this[key]]
-        }, countOccurrences).sort(function (a, b) {
-            return b[1] - a[1]
-        })
+        
+        let sortedNouns = Object.keys(countOccurrences).map(
+            function(key) { return [key, this[key]] },
+             countOccurrences
+            )
+        .sort( (a, b) =>  b[1] - a[1])
 
         // Find multiples
         for (let word of uniqueWords) {
@@ -77,7 +79,7 @@ class Analyser {
              */
         }
 
-        return sorted
+        return sortedNouns.filter(item => item[1] > 2)
     }
 
 }

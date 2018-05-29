@@ -90,11 +90,11 @@ export default {
     margin: 5px;
     padding: 5px;
     color: white;
-    background-color: midnightblue;
+    background-color: black;
 }
  .proper-noun:hover {
     color: black;
-    background-color: lightblue;
+    background-color: lightgray;
 
  }
 
