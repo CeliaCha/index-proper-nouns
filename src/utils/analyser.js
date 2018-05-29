@@ -70,6 +70,7 @@ class Analyser {
         // Find multiples
         for (let word of uniqueWords) {
             /** 
+             * @TODO :
              * find index of word in clearedText
              * let sequence = clearedText[index] + clearedText[index+1]
              * if (countOccurences(clearedText, sequence)) > n { multiples.push(sequence) }
